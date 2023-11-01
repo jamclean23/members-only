@@ -13,6 +13,9 @@ require('dotenv').config({
 
 console.log(process.env.MONGO_CONNECT);
 
+// Unique key gen
+const uniqid = require('uniqid');
+
 // Express
 const express = require('express');
 const app = express();
@@ -26,6 +29,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const User = require('./models/user.js');
 
+// Routes
+const authRoute = require('./routes/authRoute.js');
+
+// Ejs helper functions
+const ejsHelpers = require('./views/ejsFunctions.js');
 
 // ====== MAIN ======
 
@@ -35,8 +43,20 @@ const User = require('./models/user.js');
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 
+// Middleware
+app.use((req, res, next) => {
+    console.log(req.path);
+    next();
+});
+
 // Cookies/session
-// ***
+app.use(session({ secret: uniqid(), resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Body parsing
+app.use(express.urlencoded({ extended: false }));
+
 
 // ROUTES
 
@@ -44,6 +64,9 @@ app.set('view engine', 'ejs');
 app.get('/test', (req, res) => {
     res.render('test');
 });
+
+// Authentication
+app.use('/auth', authRoute);
 
 // == SERVER LISTENER
 
