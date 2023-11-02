@@ -11,8 +11,6 @@ require('dotenv').config({
     path: path.join(__dirname, '../config/.env')
 });
 
-console.log(process.env.MONGO_CONNECT);
-
 // Unique key gen
 const uniqid = require('uniqid');
 
@@ -23,7 +21,8 @@ const app = express();
 // Sessions
 const session = require('express-session');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const passportConfig = require('./functions/passport-config.js');
+passportConfig.initialize(passport);
 
 // Mongoose
 const mongoose = require('mongoose');
@@ -31,9 +30,15 @@ const User = require('./models/user.js');
 
 // Routes
 const authRoute = require('./routes/authRoute.js');
+const signInRoute = require('./routes/signInRoute.js');
+const fourOhFourRoute = require('./routes/fourOhFourRoute.js');
 
 // Ejs helper functions
 const ejsHelpers = require('./views/ejsFunctions.js');
+
+// Check authentication function
+const checkAuth = require('./functions/checkAuth.js');
+
 
 // ====== MAIN ======
 
@@ -49,59 +54,47 @@ app.use((req, res, next) => {
     next();
 });
 
-// Cookies/session
-passport.use(
-    new LocalStrategy(async (username, password, done) => {
-      try {
-        await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-        const user = await User.findOne({ username: username });
-        if (!user) {
-          return done(null, false, { message: "Incorrect username" });
-        };
-        if (user.password !== password) {
-          return done(null, false, { message: "Incorrect password" });
-        };
-        return done(null, user);
-      } catch(err) {
-        return done(err);
-      } finally {
-        mongoose.disconnect();
-      };
-    })
-  );
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-    try {
-        await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-        const user = await User.findById(id);
-        done(null, user);
-    } catch(err) {
-        done(err);
-    } finally {
-        mongoose.disconnect();
-    };
-});
-
-app.use(session({ secret: uniqid(), resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Body parsing
 app.use(express.urlencoded({ extended: false }));
+
+app.use(session({
+    secret: uniqid(),
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // ROUTES
 
+
+// Sign in
+app.get('/sign_in', signInRoute);
+
+app.post('/sign_in', passport.authenticate('local', {
+    successRedirect: '/test',
+    failureRedirect: '/sign_in'
+}));
+
 // test
-app.get('/test', (req, res) => {
-    res.render('test');
-});
+app.get(
+    '/test',
+    checkAuth,
+    (req, res) => {
+        res.render('test');
+    }
+);
 
 // Authentication
 app.use('/auth', authRoute);
+
+
+// 404
+app.use(
+    '*',
+    fourOhFourRoute
+);
 
 // == SERVER LISTENER
 
