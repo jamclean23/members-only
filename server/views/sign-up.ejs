@@ -13,8 +13,9 @@
         <div>
             <label for="username">Username</label>
             <input type="text" id="username" name="username"/>
-            <% if (locals.usernameMsg) {%>
-                <span><%= usernameMsg %></span>
+            <% const userTakenValResults = ejsHelpers.checkValidationErrors('usernameTaken', errors) %>
+            <% if (userTakenValResults) { %>
+                <span><%= userTakenValResults %></span>
             <% } %>
         </div>
 
