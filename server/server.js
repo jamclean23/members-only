@@ -32,6 +32,8 @@ const User = require('./models/user.js');
 const authRoute = require('./routes/authRoute.js');
 const signInRoute = require('./routes/signInRoute.js');
 const fourOhFourRoute = require('./routes/fourOhFourRoute.js');
+const indexRoute = require('./routes/indexRoute.js');
+
 
 // Ejs helper functions
 const ejsHelpers = require('./views/ejsFunctions.js');
@@ -42,7 +44,12 @@ const checkAuth = require('./functions/checkAuth.js');
 
 // ====== MAIN ======
 
+
 // == SETUP
+
+// Public resources
+console.log(path.join(__dirname, 'public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Ejs
 app.set('views', path.join(__dirname, '/views'));
@@ -69,11 +76,13 @@ app.use(passport.session());
 // ROUTES
 
 
+app.use('/', indexRoute);
+
 // Sign in
 app.get('/sign_in', signInRoute);
 
 app.post('/sign_in', passport.authenticate('local', {
-    successRedirect: '/test',
+    successRedirect: '/',
     failureRedirect: '/sign_in'
 }));
 

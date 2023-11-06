@@ -16,12 +16,16 @@ const addUserDb = require('../functions/addUser.js');
 
 // ====== FUNCTIONS ======
 
-async function login (req, res) {
-    res.send('mock attempted login');
-}
-
 async function logout (req, res) {
-    res.send('mock attempted logout');
+    req.logout((err) => {
+        if (err) {
+            console.log('LOGOUT ERROR');
+            console.log(err);
+            next(err);
+        } else {
+            res.redirect('/');
+        }
+    });
 }
 
 function signUp (req, res) {
@@ -74,7 +78,6 @@ async function addUser (req, res) {
 // ====== EXPORTS ======
 
 module.exports = {
-    login,
     logout,
     signUp,
     addUser

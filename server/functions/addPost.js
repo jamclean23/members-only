@@ -1,12 +1,14 @@
-// Find A users document in the database
+// Adds a new post to the database
+
 
 // ====== IMPORTS ======
 
+// System
 const path = require('path');
 
+// Mongoose
 const mongoose = require('mongoose');
-
-const User = require('../models/user.js');
+const Post = require('../models/post.js');
 
 // Dotenv
 require('dotenv').config({
@@ -16,26 +18,32 @@ require('dotenv').config({
 
 // ====== FUNCTIONS ======
 
-async function findUser  (user) {
+async function addPost (user, userId, msg) {
+    console.log(user);
+    console.log(userId);
+    console.log(msg);
+
     try {
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
         const db = mongoose.connection;
         db.on('error', () => {
             throw new Error("Mongoose Connection Error");
         });
-        
-        const result = await User.find({'name': user});
-    
-        return result;
 
+        const post = new Post({
+            user: user,
+            msg: msg,
+            date: new Date()
+        });
+
+        await post.save();
+        
     } catch (err) {
         console.log(err);
-        throw new Error(err);
-
     }
 }
 
 
 // ====== EXPORTS ======
 
-module.exports = findUser;
+module.exports = addPost;

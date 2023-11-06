@@ -37,13 +37,8 @@ async function addUser  (username, password) {
 
     } catch (err) {
         console.log(err);
-        throw new Error(err);
-
-    } finally {
-        mongoose.disconnect();
 
     }
-
 }
 
 

@@ -36,8 +36,7 @@ const loginValidation = [
 router.use(loginValidation);
 
 // Routes
-router.use('/attempt_login', authController.login);
-router.use('/attempt_logout', authController.logout);
+router.use('/logout', authController.logout);
 router.use('/sign_up', authController.signUp);
 router.use('/add_user', authController.addUser);
 

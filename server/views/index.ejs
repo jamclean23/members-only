@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="/index/index.js"></script>
+    <link rel="stylesheet" href="/index/index.css"/>
+    <title>Members Only</title>
+</head>
+
+<body>
+    <header>
+        <h1>Members Only</h1>
+        <nav>
+            <% if (locals.user) { %>
+                <span class="username"><%=locals.user%></span>
+                <button class="logoutBtn"">Logout</button>
+            <% } else { %>
+                <button class="loginBtn"">Login</button>
+            <% } %>
+        </nav>
+    </header>
+    <main>
+        <div class="operationsBtnsWrapper">
+            <% if (locals.user) { %>
+                <button class="addPostBtn">Add a Post</button>
+            <% } %>
+        </div>
+    </main>
+    <div class="modalWrapper">
+        <aside class="addPostModal">
+            <h2>Add Post</h2>
+            <form method="post" action="/add_post">
+                <div class="inputWrapper">
+                    <label for="addPostMsg" >Message</label>
+                    <textarea name="msg" id="addPostMsg"></textarea>
+                </div>
+                <input type="submit" id="submit"/>
+            </form>
+        </aside>
+    </div>
+</body>
+
+</html>

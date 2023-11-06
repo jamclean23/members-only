@@ -50,8 +50,6 @@ function initialize (passport) {
         } catch (err) {
             console.log(err);
             return done(err);
-        } finally {
-            mongoose.disconnect()
         }
     };
 
@@ -70,9 +68,7 @@ function initialize (passport) {
             user = await User.findById(id);
             done(null, user);
         } catch (err) {
-            cone(err);
-        } finally {
-            mongoose.disconnect();
+            console.log(err);
         }
     })
 
