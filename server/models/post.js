@@ -9,7 +9,8 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
     user: String,
-    msg: String
+    msg: String,
+    date: Date
 });
 
 const Post = new mongoose.model('posts', postSchema);

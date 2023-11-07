@@ -4,15 +4,20 @@
 // ====== IMPORTS ======
 
 const addPostDb = require('../functions/addPost.js');
-
+const findPostsDb = require('../functions/findPosts.js');
 
 // ====== FUNCTIONS ======
 
-function indexPage (req, res) {
+async function indexPage (req, res) {
+    // Get posts
+    const posts = await findPostsDb();
+    console.log(posts);
+    // Render page
+
     if (req.user) {
-        res.render('index', { user: req.user.name });
+        res.render('index', { user: req.user.name, posts });
     } else {
-        res.render('index', { user: null});
+        res.render('index', { user: null, posts });
     }
 }
 

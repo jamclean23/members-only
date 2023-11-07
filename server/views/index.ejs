@@ -26,6 +26,17 @@
                 <button class="addPostBtn">Add a Post</button>
             <% } %>
         </div>
+        <section class="postsSection">
+            <% if (locals.posts) { %>
+                <% locals.posts.forEach((post) => { %>
+                    <article class="post" data-id="<%=post.id%>">
+                        <span class="postUser"><%=post.user%></span>
+                        <p class="postMsg"><%=post.msg%></p>
+                        <span class="postDate"><%=new Date(post.date)%></span>
+                    </article>
+                <% }); %>
+            <% } %>
+        </section>
     </main>
     <div class="modalWrapper">
         <aside class="addPostModal">
