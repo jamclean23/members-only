@@ -29,6 +29,16 @@ function addListeners() {
   addLoginBtnListener();
   addLogoutBtnListener();
   addPostBtnListener();
+  addSubmitBtnListener();
+}
+function addSubmitBtnListener() {
+  const submitBtn = document.querySelector('.signUpBtn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', submitBtnListner);
+  }
+}
+function submitBtnListner() {
+  window.location.href = '/auth/sign_up';
 }
 function addWindowListener() {
   window.addEventListener('resize', windowResizeListener);

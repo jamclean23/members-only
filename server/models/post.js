@@ -2,6 +2,7 @@
 
 // ====== IMPORTS ======
 
+const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 
 
@@ -9,8 +10,9 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
     user: String,
+    userId: String,
     msg: String,
-    date: Date
+    date: Date,
 });
 
 const Post = new mongoose.model('posts', postSchema);

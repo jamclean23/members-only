@@ -15,6 +15,7 @@ const controller = require('../controllers/indexController.js');
 
 router.get('/', controller.indexPage);
 router.use('/add_post', controller.addPost);
+router.use('/remove_post', controller.removePost);
 
 
 // ====== EXPORTS ======

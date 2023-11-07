@@ -16,6 +16,7 @@
                 <span class="username"><%=locals.user%></span>
                 <button class="logoutBtn"">Logout</button>
             <% } else { %>
+                <button class="signUpBtn"">Sign Up</button>
                 <button class="loginBtn"">Login</button>
             <% } %>
         </nav>
@@ -28,13 +29,24 @@
         </div>
         <section class="postsSection">
             <% if (locals.posts) { %>
-                <% locals.posts.forEach((post) => { %>
-                    <article class="post" data-id="<%=post.id%>">
+                <% for (let i = locals.posts.length; i > 0; i--) { %>
+                    <% const post = locals.posts[i-1]%>
+                    <article class="post">
+                        <% console.log(locals.userId) %>
+                        <% console.log(post.userId) %>
+                        <% if ((locals.user && (locals.userId === post.userId)) || locals.admin) { %>
+                            <div class="xBtnWrapper">
+                                <form method="POST" action="/remove_post">
+                                    <input name="postId" type="text" value="<%=post.id%>" class="metaInput"/>
+                                    <button class="postXBtn">X</button>
+                                </form>
+                            </div>
+                        <% } %>
                         <span class="postUser"><%=post.user%></span>
                         <p class="postMsg"><%=post.msg%></p>
                         <span class="postDate"><%=new Date(post.date)%></span>
                     </article>
-                <% }); %>
+                <% } %>
             <% } %>
         </section>
     </main>

@@ -5,19 +5,20 @@
 
 const addPostDb = require('../functions/addPost.js');
 const findPostsDb = require('../functions/findPosts.js');
+const removePostDb = require('../functions/removePost.js');
+
 
 // ====== FUNCTIONS ======
 
 async function indexPage (req, res) {
     // Get posts
     const posts = await findPostsDb();
-    console.log(posts);
     // Render page
 
     if (req.user) {
-        res.render('index', { user: req.user.name, posts });
+        res.render('index', { admin: req.user.admin, userId: req.user.id, user: req.user.name, posts });
     } else {
-        res.render('index', { user: null, posts });
+        res.render('index', { admin: null, userId: null, user: null, posts });
     }
 }
 
@@ -28,8 +29,19 @@ async function addPost (req, res) {
     res.redirect('/');
 }
 
-function removePost (req, res) {
+async function removePost (req, res) {
 
+    if (req.body.postId) {
+        try {
+            await removePostDb(req.body.postId);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            res.redirect('/');
+        }
+    } else {
+        console.log('No id provided');
+    }
 }
 
 
@@ -37,5 +49,6 @@ function removePost (req, res) {
 
 module.exports = {
     indexPage,
-    addPost
+    addPost,
+    removePost
 }

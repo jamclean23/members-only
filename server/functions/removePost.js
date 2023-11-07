@@ -18,10 +18,7 @@ require('dotenv').config({
 
 // ====== FUNCTIONS ======
 
-async function addPost (user, userId, msg) {
-    console.log(user);
-    console.log(userId);
-    console.log(msg);
+async function addPost (userId) {
 
     try {
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
@@ -30,14 +27,7 @@ async function addPost (user, userId, msg) {
             throw new Error("Mongoose Connection Error");
         });
 
-        const post = new Post({
-            user: user,
-            userId: userId,
-            msg: msg,
-            date: new Date()
-        });
-
-        await post.save();
+        await Post.findByIdAndDelete(userId);
         
     } catch (err) {
         console.log(err);

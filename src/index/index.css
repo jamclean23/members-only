@@ -93,8 +93,7 @@ textarea {
     background-color: white;
     border-radius: 4px;
     box-shadow: 0 0 4px black;
-    padding: 2rem 1rem;
-    padding-bottom: .5rem;
+    padding: .5rem 1rem;
 }
 
 .postUser {
@@ -109,4 +108,20 @@ textarea {
     display: block;
     padding-top: .25rem;
     color: rgba(0,0,0,.7);
+}
+
+.xBtnWrapper {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.metaInput {
+    display: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

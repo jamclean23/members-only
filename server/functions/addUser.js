@@ -30,14 +30,14 @@ async function addUser  (username, password) {
         
         const newUser = new User({
             name: username,
-            password: bcrypt.hashSync(password, 10)
+            password: bcrypt.hashSync(password, 10),
+            admin: false
         });
 
         await newUser.save();
 
     } catch (err) {
         console.log(err);
-
     }
 }
 

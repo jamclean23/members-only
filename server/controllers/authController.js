@@ -71,7 +71,7 @@ async function addUser (req, res) {
         res.render('sign-up.ejs', {ejsHelpers, errors});
 
     } else {   
-        res.send('Account created (mock)')
+        res.redirect('/');
     }
 }
 
